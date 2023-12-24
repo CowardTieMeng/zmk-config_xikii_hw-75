@@ -238,7 +238,7 @@ static int indicator_init(const struct device *dev)
 // ZMK_LISTENER(indicator, indicator_event_listener);
 // ZMK_SUBSCRIPTION(indicator, zmk_activity_state_changed);
 
-// static bool caps_lock_active = false;
+static bool caps_lock_active = false;
 // 这是一个事件监听器，它会在CAPS键的状态改变时被触发
 static int caps_key_event_listener(const zmk_event_t *eh)
 {
@@ -246,12 +246,9 @@ static int caps_key_event_listener(const zmk_event_t *eh)
 	if (activity_ev != NULL) {
 		if ( activity_ev->keycode == HID_USAGE_KEY_KEYBOARD_CAPS_LOCK ) {
 			if (activity_ev->state){
-				active = true;
-				indicator_set_enable(true);
-			}
-			else{
-				active = false;
-				indicator_set_enable(false);
+				caps_lock_active = !caps_lock_active;
+				active = caps_lock_active;
+				indicator_set_enable(active);
 			}
 			return 0;
 		}
