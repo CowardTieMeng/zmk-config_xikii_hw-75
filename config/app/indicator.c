@@ -15,6 +15,7 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include <zmk/workqueue.h>
 #include <zmk/event_manager.h>
 #include <zmk/events/activity_state_changed.h>
+#include <zmk/events/keycode_state_changed.h>
 
 #include <app/indicator.h>
 
@@ -240,19 +241,24 @@ static int indicator_init(const struct device *dev)
 // 这是一个事件监听器，它会在CAPS键的状态改变时被触发
 static int caps_key_event_listener(const zmk_event_t *eh)
 {
-	struct zmk_keycode_state_changed *ev = as_zmk_keycode_state_changed(eh);
-	if (ev->keycode == HID_USAGE_KEY_KEYBOARD_CAPS_LOCK) {
-		// 如果CAPS键被按下，就启用LED
-		if (ev->state) {
-			indicator_set_enable(true);
-		}
-		// 如果CAPS键被释放，就禁用LED
-		else {
-			indicator_set_enable(false);
-		}
+	struct zmk_keycode_state_changed *activity_ev = as_zmk_keycode_state_changed(eh);
+	if (activity_ev != NULL) {
+		active = activity_ev->state == HID_USAGE_KEY_KEYBOARD_CAPS_LOCK;
+		post_indicator_update();
+		return 0;
 	}
-
-	return 0;
+	return -ENOTSUP;
+	// if (ev->keycode == HID_USAGE_KEY_KEYBOARD_CAPS_LOCK) {
+	// 	// 如果CAPS键被按下，就启用LED
+	// 	if (ev->state) {
+	// 		indicator_set_enable(true);
+	// 	}
+	// 	// 如果CAPS键被释放，就禁用LED
+	// 	else {
+	// 		indicator_set_enable(false);
+	// 	}
+	// }
+	// return 0;
 }
 
 // 在你的代码中注册这个监听器
