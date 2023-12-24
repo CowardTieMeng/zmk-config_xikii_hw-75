@@ -244,13 +244,15 @@ static int caps_key_event_listener(const zmk_event_t *eh)
 {
 	struct zmk_keycode_state_changed *activity_ev = as_zmk_keycode_state_changed(eh);
 	if (activity_ev != NULL) {
-		if ( active = activity_ev->keycode == HID_USAGE_KEY_KEYBOARD_CAPS_LOCK; ) {
-			if (activity_ev->state)
+		if ( activity_ev->keycode == HID_USAGE_KEY_KEYBOARD_CAPS_LOCK ) {
+			if (activity_ev->state){
+				active = true;
 				indicator_set_enable(true);
-			else
+			}
+			else{
+				active = false;
 				indicator_set_enable(false);
-
-			post_indicator_update();
+			}
 			return 0;
 		}
 	}
