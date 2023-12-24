@@ -234,7 +234,29 @@ static int indicator_init(const struct device *dev)
 	return 0;
 }
 
-ZMK_LISTENER(indicator, indicator_event_listener);
-ZMK_SUBSCRIPTION(indicator, zmk_activity_state_changed);
+// ZMK_LISTENER(indicator, indicator_event_listener);
+// ZMK_SUBSCRIPTION(indicator, zmk_activity_state_changed);
+
+// 这是一个事件监听器，它会在CAPS键的状态改变时被触发
+static int caps_key_event_listener(const zmk_event_t *eh)
+{
+	struct zmk_keycode_state_changed *ev = as_zmk_keycode_state_changed(eh);
+	if (ev->keycode == HID_USAGE_KEY_KEYBOARD_CAPS_LOCK) {
+		// 如果CAPS键被按下，就启用LED
+		if (ev->state) {
+			indicator_set_enable(true);
+		}
+		// 如果CAPS键被释放，就禁用LED
+		else {
+			indicator_set_enable(false);
+		}
+	}
+
+	return 0;
+}
+
+// 在你的代码中注册这个监听器
+ZMK_LISTENER(caps_key_event_listener, caps_key_event_listener);
+ZMK_SUBSCRIPTION(caps_key_event_listener, zmk_keycode_state_changed);
 
 SYS_INIT(indicator_init, APPLICATION, CONFIG_APPLICATION_INIT_PRIORITY);
