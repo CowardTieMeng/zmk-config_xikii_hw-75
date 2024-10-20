@@ -34,7 +34,7 @@ jobs:
           apt-get install -y nodejs
           apt-get install -y python3-venv
           python3 -m venv myenv  # 创建虚拟环境
-          source myenv/bin/activate  # 激活虚拟环境
+          . myenv/bin/activate  # 激活虚拟环境
           pip install -U fonttools
           npm install -g lv_font_conv
 
