@@ -65,6 +65,7 @@ jobs:
 
       - name: West build
         run: |
+          . myenv/bin/activate  # 激活虚拟环境
           west build -s zmk/app -b ${{ matrix.board }} -- \
             -DZMK_CONFIG=${GITHUB_WORKSPACE}/config \
             -DKEYMAP_FILE=${GITHUB_WORKSPACE}/config/${{ matrix.keymap }}
