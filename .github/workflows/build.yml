@@ -59,6 +59,7 @@ jobs:
           west init -l config
           west update
           west zephyr-export
+          . myenv/bin/activate  # 激活虚拟环境
           pip install -r zephyr/scripts/requirements.txt
           git config --global --add safe.directory $PWD
 
