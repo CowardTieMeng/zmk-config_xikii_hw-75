@@ -32,6 +32,7 @@ jobs:
           apt-get install -y python3-pip protobuf-compiler curl
           curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
           apt-get install -y nodejs
+          apt-get install -y sudo
           sudo -H pip install -U fonttools
           npm install -g lv_font_conv
 
@@ -56,6 +57,7 @@ jobs:
           west init -l config
           west update
           west zephyr-export
+          apt-get install -y sudo
           sudo -H pip install -r zephyr/scripts/requirements.txt
           git config --global --add safe.directory $PWD
 
