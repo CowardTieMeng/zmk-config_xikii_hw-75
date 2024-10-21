@@ -9,7 +9,6 @@ jobs:
 
     container:
       image: zmkfirmware/zmk-build-arm:stable
-      options: --user root
 
     strategy:
       matrix:
