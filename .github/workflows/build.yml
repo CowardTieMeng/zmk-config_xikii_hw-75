@@ -81,7 +81,7 @@ jobs:
       - name: Archive
         uses: actions/upload-artifact@v4
         with:
-          name: firmware-${{ github.run_id }}
+          name: firmware-${{ matrix.board }}-${{ github.run_id }}
           path: build/artifacts
 
   release:
