@@ -97,8 +97,8 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          name: firmware-${{ matrix.board }}-${{ github.run_id }}
-          path: firmware-${{ matrix.board }}-${{ github.run_id }}
+          name: firmware
+          path: firmware
 
       - name: Prepare release notes
         id: release
